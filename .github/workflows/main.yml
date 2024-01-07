@@ -27,8 +27,8 @@ jobs:
         # To login to Dockerhub with username and access token
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-        # setting the TAG and Image Name for further use. Here I have used Tag as 0.1, 0.2... (Optional)
-        TAG="0.${{ github.run_number }}"
+        # setting the TAG and Image Name for further use. Here I have used Tag as 0.0.1, 0.0.2... (Optional)
+        TAG="0.0.${{ github.run_number }}"
         IMAGE_NAME="srihariharan/fluxcd-paymentservice"
 
         # Tagging the Docker image as the image name and the new tag since the image name will be flux while building
