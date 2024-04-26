@@ -21,11 +21,12 @@ jobs:
 
       - name: Deploy Started Notification
         uses: mikesprague/teams-incoming-webhook-action@v1
+        if: always()
         with:
           github-token: ${{ github.token }}
           webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
           deploy-card: true
-          title: '🚀 Build process initiated for  ${{github.repository}} ${{if or(eq(github.ref, 'refs/heads/dev'), eq(github.ref, 'refs/heads/qc'), eq(github.ref, 'refs/heads/uat'), eq(github.ref, 'refs/heads/main')) }}Branch: ${{ github.ref }}${{endif}}!'
+          title: '🚀 Build process initiated for ${{github.repository}} ${{ github.ref }}'
           color: 'info'
 
       - name: Build and Push Docker Image
@@ -35,17 +36,13 @@ jobs:
         run: |
           # To build the code using the dockerfile
           docker build -t flux .
-
           # To login to Dockerhub with username and access token
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-
           # setting the TAG and Image Name for further use. Here I have used Tag as 0.0.1, 0.0.2... (Optional)
           TAG="0.0.${{ github.run_number }}"
           IMAGE_NAME="srihariharan/fluxcd-paymentservice"
-
           # Tagging the Docker image as the image name and the new tag since the image name will be flux while building
           docker tag flux $IMAGE_NAME:$TAG
-
           # Finally pushing the Docker image to Dockerhub
           docker push $IMAGE_NAME:$TAG
 
@@ -56,7 +53,7 @@ jobs:
           github-token: ${{ github.token }}
           webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
           deploy-card: true
-          title: '⚠️ Build process encountered an issue in  ${{github.repository}} ${{if or(eq(github.ref, 'refs/heads/dev'), eq(github.ref, 'refs/heads/qc'), eq(github.ref, 'refs/heads/uat'), eq(github.ref, 'refs/heads/main')) }}Branch: ${{ github.ref }}${{endif}}. Investigation underway.'
+          title: '⚠️ Build process encountered an issue in ${{github.repository}} ${{ github.ref }}. Investigation underway.'
           color: 'failure'
 
       - name: Success Notification
@@ -66,5 +63,5 @@ jobs:
           github-token: ${{ github.token }}
           webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
           deploy-card: true
-          title: '🎉 Deployment successful. ${{github.repository}} ${{if or(eq(github.ref, 'refs/heads/dev'), eq(github.ref, 'refs/heads/qc'), eq(github.ref, 'refs/heads/uat'), eq(github.ref, 'refs/heads/main')) }}Branch: ${{ github.ref }}${{endif}} Image securely pushed to ECR.'
+          title: '🎉 Deployment successful. ${{github.repository}} ${{ github.ref }} Image securely pushed to ECR.'
           color: 'success'
