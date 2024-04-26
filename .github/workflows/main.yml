@@ -36,3 +36,11 @@ jobs:
 
         # Finally pushing the Docker image to Dockerhub
         docker push $IMAGE_NAME:$TAG
+
+    - name: Send simple notification
+      uses: mikesprague/teams-incoming-webhook-action@v1
+      with:
+        github-token: ${{ github.token }}
+        webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+        title: 'Notification Test'
+        message: 'This is an example of a simple notification with a title and a body'
