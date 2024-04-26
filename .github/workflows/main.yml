@@ -25,7 +25,7 @@ jobs:
           github-token: ${{ github.token }}
           webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
           deploy-card: true
-          title: 'Build has been Started'
+          title: '🚀 Build process initiated for  ${{github.repository}} ${{if or(eq(github.ref, 'refs/heads/dev'), eq(github.ref, 'refs/heads/qc'), eq(github.ref, 'refs/heads/uat'), eq(github.ref, 'refs/heads/main')) }}Branch: ${{ github.ref }}${{endif}}!'
           color: 'info'
 
       - name: Build and Push Docker Image
@@ -56,7 +56,7 @@ jobs:
           github-token: ${{ github.token }}
           webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
           deploy-card: true
-          title: 'Build Failed'
+          title: '⚠️ Build process encountered an issue in  ${{github.repository}} ${{if or(eq(github.ref, 'refs/heads/dev'), eq(github.ref, 'refs/heads/qc'), eq(github.ref, 'refs/heads/uat'), eq(github.ref, 'refs/heads/main')) }}Branch: ${{ github.ref }}${{endif}}. Investigation underway.'
           color: 'failure'
 
       - name: Success Notification
@@ -66,5 +66,5 @@ jobs:
           github-token: ${{ github.token }}
           webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
           deploy-card: true
-          title: 'Image has been pushed'
+          title: '🎉 Deployment successful. ${{github.repository}} ${{if or(eq(github.ref, 'refs/heads/dev'), eq(github.ref, 'refs/heads/qc'), eq(github.ref, 'refs/heads/uat'), eq(github.ref, 'refs/heads/main')) }}Branch: ${{ github.ref }}${{endif}} Image securely pushed to ECR.'
           color: 'success'
