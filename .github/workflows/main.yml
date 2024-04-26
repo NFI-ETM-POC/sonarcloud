@@ -26,7 +26,7 @@ jobs:
           github-token: ${{ github.token }}
           webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
           deploy-card: true
-          title: '🚀 Build process initiated for ${{github.repository}} ${{ github.ref }}'
+          title: '🚀 Build process initiated for ${{github.repository_owner}}/${{github.event.repository.name}} ${{ github.event.ref_type == 'branch' && github.ref != 'refs/heads/main' ? github.ref : '' }}'
           color: 'info'
 
       - name: Build and Push Docker Image
@@ -53,7 +53,7 @@ jobs:
           github-token: ${{ github.token }}
           webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
           deploy-card: true
-          title: '⚠️ Build process encountered an issue in ${{github.repository}} ${{ github.ref }}. Investigation underway.'
+          title: '⚠️ Build process encountered an issue in ${{github.repository_owner}}/${{github.event.repository.name}} ${{ github.event.ref_type == 'branch' && github.ref != 'refs/heads/main' ? github.ref : '' }}. Investigation underway.'
           color: 'failure'
 
       - name: Success Notification
@@ -63,5 +63,5 @@ jobs:
           github-token: ${{ github.token }}
           webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
           deploy-card: true
-          title: '🎉 Deployment successful. ${{github.repository}} ${{ github.ref }} Image securely pushed to ECR.'
+          title: '🎉 Deployment successful. ${{github.repository_owner}}/${{github.event.repository.name}} ${{ github.event.ref_type == 'branch' && github.ref != 'refs/heads/main' ? github.ref : '' }} Image securely pushed to ECR.'
           color: 'success'
